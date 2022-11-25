@@ -71,7 +71,9 @@ public class UserController {
         }catch (UserNotFoundException e){
             throw new UserNotFoundException();
         }catch (Exception e){
-            responseEntity=new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+            System.out.println("e = " + e);
+            e.printStackTrace();
+            responseEntity=new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
         }
         return responseEntity;
     }
