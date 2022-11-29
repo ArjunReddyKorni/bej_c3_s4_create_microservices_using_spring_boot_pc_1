@@ -34,6 +34,7 @@
 		<module>UserAuthentication</module>
 		<module>UserProduct</module>
 		<module>demoapigateway</module>
+		<module>EurekaServer</module>
 	</modules>
 
 	<build>

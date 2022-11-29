@@ -11,6 +11,7 @@ services:
     depends_on:
       - mongoService
       - apigateway
+      - eureka-service
 
   mongoService:
     image:  mongo
@@ -30,6 +31,7 @@ services:
     depends_on:
       - mysqlService
       - apigateway
+      - eureka-service
 
   mysqlService:
     image:  mysql:latest
@@ -50,3 +52,11 @@ services:
     network_mode: user-network
     ports:
       - 9002:9002
+
+  eureka-service:
+    container_name: eureka-service
+    build: EurekaServer/
+    restart: always
+    network_mode: user-network
+    ports:
+      - 8761:8761
