@@ -5,28 +5,36 @@ import com.example.UserProduct.domain.User;
 import com.example.UserProduct.exception.ProductNotFoundException;
 import com.example.UserProduct.exception.UserAlreadyFoundException;
 import com.example.UserProduct.exception.UserNotFoundException;
+import com.example.UserProduct.proxy.UserProxy;
 import com.example.UserProduct.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
 @Service
 public class UserServiceImpl implements UserService{
+
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private UserProxy userProxy;
 
 
-    public UserServiceImpl(UserRepository userRepository){
-        this.userRepository=userRepository;
-    }
     @Override
     public User addUser(User user) throws UserAlreadyFoundException {
         if(userRepository.findById(user.getUserId()).isPresent()) {
             throw new UserAlreadyFoundException();
         }
-        return userRepository.insert(user);
+       User saveUser = userRepository.save(user);
+
+        if (!(saveUser.getUserId().isEmpty())){
+            ResponseEntity rs = userProxy.saveUser(user);
+            System.out.println(rs.getBody());
+        }
+        return saveUser;
     }
 
 

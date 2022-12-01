@@ -20,13 +20,11 @@ import java.util.Map;
 public class UserController {
     private UserService userService;
     private SecurityTokenGenerator securityTokenGenerator;
-
     @Autowired
     public UserController(UserService userService, SecurityTokenGenerator securityTokenGenerator){
         this.userService=userService;
         this.securityTokenGenerator=securityTokenGenerator;
     }
-
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@RequestBody User user) throws UserNotFoundException {
         Map<String,String> map=null;
@@ -42,12 +40,9 @@ public class UserController {
             return new ResponseEntity<>("Try after sometimes", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
     @PostMapping("/register")
     public ResponseEntity<?> saveUser(@RequestBody User user)throws UserAlreadyFoundException {
         User userCreated=userService.saveUser(user);
-        return new ResponseEntity<>("USER CREATED", HttpStatus.CREATED);
+        return new ResponseEntity<>(userCreated, HttpStatus.CREATED);
     }
-
-
 }

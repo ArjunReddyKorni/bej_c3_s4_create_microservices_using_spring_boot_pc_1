@@ -11,15 +11,17 @@ public class User {
     private String userId;
     private String userName;
     private String userAddress;
+    private String password;
     private List<Product> productList;
 
     public User(){}
 
-    public User(String userId, String userName, String userAddress, List<Product> productList) {
+    public User(String userId, String userName, String userAddress,String password, List<Product> productList) {
         this.userId = userId;
         this.userName = userName;
         this.userAddress = userAddress;
         this.productList = productList;
+        this.password = password;
     }
 
     public String getUserId() {
@@ -52,6 +54,14 @@ public class User {
 
     public void setProductList(List<Product> productList) {
         this.productList = productList;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override

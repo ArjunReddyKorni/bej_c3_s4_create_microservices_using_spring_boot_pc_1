@@ -6,11 +6,13 @@ import com.example.UserProduct.exception.ProductNotFoundException;
 import com.example.UserProduct.exception.UserAlreadyFoundException;
 import com.example.UserProduct.exception.UserNotFoundException;
 import com.example.UserProduct.service.UserService;
+import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.ServletRequest;
 import java.util.ArrayList;
 @RestController
 @RequestMapping("/userProductapp/user")
@@ -36,18 +38,18 @@ public class UserController {
         }
         return responseEntity;
     }
-
-    @PutMapping("/product/{userId}")
-    public ResponseEntity<?> addProductFromUser(@PathVariable String userId,@RequestBody Product product)throws UserNotFoundException{
+    @PostMapping("/product")
+    public ResponseEntity<?> addProductFromUser(ServletRequest request, @RequestBody Product product)throws UserNotFoundException{
         ResponseEntity responseEntity=null;
         try{
+            Claims claims = (Claims)request.getAttribute("claims");
+            String userId = claims.getSubject();
             responseEntity=new ResponseEntity<>(userService.addProductForUser(userId,product),HttpStatus.OK);
         }catch (UserNotFoundException e){
             responseEntity=new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return responseEntity;
     }
-
     @DeleteMapping("/product/delete/{productId}")
     public ResponseEntity<?> deleteProductFromUser(@PathVariable int productId,@RequestBody User user)throws ProductNotFoundException,UserNotFoundException{
         ResponseEntity responseEntity=null;
